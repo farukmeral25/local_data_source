@@ -28,9 +28,6 @@ class LocalDataApp extends StatelessWidget {
       navigatorKey: GlobalContextKey.instance.globalKey,
       scaffoldMessengerKey: GlobalScaffoldMessangerKey.instance.globalKey,
       onGenerateRoute: router.generateRoute,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: const SplashPage(),
     );
   }

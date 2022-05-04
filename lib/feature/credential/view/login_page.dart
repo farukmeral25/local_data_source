@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_data_source/core/constants/theme/app_colors.dart';
 import 'package:local_data_source/core/service/service_modules/view_model_module.dart';
 import 'package:local_data_source/feature/credential/viewmodel/credential_view_model.dart';
 
@@ -44,7 +45,7 @@ class LoginPage extends ConsumerWidget {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.amber,
+                    color: AppColor.amber,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Padding(

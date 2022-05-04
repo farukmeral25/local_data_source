@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_data_source/core/constants/theme/app_colors.dart';
 import 'package:local_data_source/core/service/service_modules/use_case_module.dart';
 import 'package:local_data_source/core/service/service_modules/util_module.dart';
 import 'package:local_data_source/core/shared/snackbar_widget.dart';
@@ -27,7 +27,8 @@ class SplashViewModel {
     }, (data) {
       ref.read(appUserProvider).userInfo = data;
       RouteManager.routeManager.pageAndRemoveUntil(homePageRoute);
-      showSnackBar(title: "Welcome back", color: Colors.amber, duration: 1000);
+      showSnackBar(
+          title: "Welcome back", color: AppColor.amber, duration: 1000);
       return Right(data);
     });
   }

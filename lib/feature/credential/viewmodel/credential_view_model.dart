@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_data_source/core/constants/theme/app_colors.dart';
 import 'package:local_data_source/core/error/failure.dart';
 import 'package:local_data_source/core/service/service_modules/use_case_module.dart';
 import 'package:local_data_source/core/service/service_modules/util_module.dart';
@@ -54,7 +55,7 @@ class CredentialViewModel {
       }, (data) {
         showSnackBar(
           title: "Login successful",
-          color: Colors.green,
+          color: AppColor.green,
         );
         RouteManager.routeManager.pageAndRemoveUntil(homePageRoute);
         return const Right(null);
@@ -78,7 +79,7 @@ class CredentialViewModel {
       RouteManager.routeManager.pageAndRemoveUntil(loginPageRoute);
       showSnackBar(
         title: "Logout successful",
-        color: Colors.orange,
+        color: AppColor.orange,
       );
       return const Right(null);
     });
