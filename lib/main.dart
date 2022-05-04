@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_data_source/core/keys/global_key.dart';
+import 'package:local_data_source/core/service/setup_service.dart';
 import 'package:local_data_source/core/utils/route_manager/domain/router.dart'
     as router;
-import 'package:local_data_source/feature/credential/view/splash_page.dart';
-import 'package:local_data_source/feature/credential/viewmodel/credential_provider.dart';
-import 'package:provider/provider.dart';
-import 'core/init/get_it.dart' as service;
+import 'package:local_data_source/feature/splash/view/page/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await service.init();
+  await setupServices();
+
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<CredentialProvider>(
-            create: (_) => service.getIt()),
-      ],
-      child: const LocalDataApp(),
+    const ProviderScope(
+      child: LocalDataApp(),
     ),
   );
 }

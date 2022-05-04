@@ -1,4 +1,6 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:local_data_source/core/service/service_module.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_key_with_value_param.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_key_param.dart';
 import 'package:local_data_source/core/error/failure.dart';
@@ -9,7 +11,7 @@ import 'package:local_data_source/core/utils/local_data_source/domain/repository
 class LocalRepository implements ILocalRepository {
   final FlutterSecureStorage secureStorage;
 
-  LocalRepository({required this.secureStorage});
+  LocalRepository(Ref _ref) : secureStorage = _ref.read(secureStorageProvider);
 
   @override
   Future<Either<Failure, String>> getDataFromKey(LocalKeyParam param) async {

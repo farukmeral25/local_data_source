@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_data_source/core/service/use_case_module.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_key_param.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_key_with_value_param.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_keys.dart';
@@ -11,21 +13,20 @@ import 'package:local_data_source/feature/credential/domain/entity/user_info.dar
 import 'package:local_data_source/feature/credential/domain/repository/i_credential_repository.dart';
 
 class CredentialRepository implements ICredentialRepository {
-  final GetDataFromKeyUsecase getDataFromKeyUsecase;
-  final SaveDataFromKeyUsecase saveDataFromKeyUsecase;
-  final RemoveDataFromKeyUsecase removeDataFromKeyUsecase;
+  late final GetDataFromKeyUsecase _getDataFromKeyUsecase;
+  late final SaveDataFromKeyUsecase _saveDataFromKeyUsecase;
+  late final RemoveDataFromKeyUsecase _removeDataFromKeyUsecase;
 
-  CredentialRepository({
-    required this.getDataFromKeyUsecase,
-    required this.saveDataFromKeyUsecase,
-    required this.removeDataFromKeyUsecase,
-  });
+  CredentialRepository(Ref _ref)
+      : _getDataFromKeyUsecase = _ref.read(getDataFromKeyUsecaseProvider),
+        _saveDataFromKeyUsecase = _ref.read(saveDataFromKeyUsecaseProvider),
+        _removeDataFromKeyUsecase = _ref.read(removeDataFromKeyUsecaseProvider);
 
   @override
   Future<Either<Failure, UserInfo>> getUserInfo(LocalKeys key) async {
     try {
       final getUserInfoEither =
-          await getDataFromKeyUsecase(LocalKeyParam(localKey: key));
+          await _getDataFromKeyUsecase(LocalKeyParam(localKey: key));
       return getUserInfoEither.fold(
         (failure) => Left(failure),
         (data) {
@@ -42,7 +43,7 @@ class CredentialRepository implements ICredentialRepository {
   Future<Either<Failure, void>> cacheUserInfo(
       UserInfoModel userInfoModel) async {
     try {
-      final cacheUserInfoEither = await saveDataFromKeyUsecase(
+      final cacheUserInfoEither = await _saveDataFromKeyUsecase(
         LocalKeyWithValueParam(
           localKey: LocalKeys.cacheuserinfo,
           value: userInfoModel.toJson(),
@@ -61,7 +62,7 @@ class CredentialRepository implements ICredentialRepository {
   Future<Either<Failure, void>> removeUserInfo(LocalKeys key) async {
     try {
       final removeUserInfoEither =
-          await removeDataFromKeyUsecase(LocalKeyParam(localKey: key));
+          await _removeDataFromKeyUsecase(LocalKeyParam(localKey: key));
       return removeUserInfoEither.fold(
         (failure) => Left(failure),
         (data) {

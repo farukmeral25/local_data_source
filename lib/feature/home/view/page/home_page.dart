@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:local_data_source/feature/credential/viewmodel/credential_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_data_source/core/service/util_module.dart';
+import 'package:local_data_source/core/service/view_model_module.dart';
+import 'package:local_data_source/core/utils/app_user.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    AppUser appUser = ref.watch(appUserProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home Page"),
       ),
       body: Center(
-        child: Consumer<CredentialProvider>(
-          builder: (context, CredentialProvider credentialProvider, child) {
-            return Column(
-              children: [
-                Text(credentialProvider.userInfo.userName),
-                Text(credentialProvider.userInfo.mail),
-                Text(credentialProvider.userInfo.password),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      credentialProvider.logOut();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Log Out"),
-                      ),
-                    ),
+        child: Column(
+          children: [
+            Text(appUser.userInfo.userName),
+            Text(appUser.userInfo.mail),
+            Text(appUser.userInfo.password),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: GestureDetector(
+                onTap: () {
+                  ref.read(credentialViewModelProvider).logOut();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                )
-              ],
-            );
-          },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text("Log Out"),
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
