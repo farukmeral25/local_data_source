@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:local_data_source/core/service/util_module.dart';
-import 'package:local_data_source/core/service/view_model_module.dart';
+import 'package:local_data_source/core/service/service_modules/util_module.dart';
+import 'package:local_data_source/core/service/service_modules/view_model_module.dart';
 import 'package:local_data_source/core/utils/app_user.dart';
 
 class HomePage extends ConsumerWidget {

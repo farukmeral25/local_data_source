@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:local_data_source/core/service/use_case_module.dart';
-import 'package:local_data_source/core/service/util_module.dart';
+import 'package:local_data_source/core/service/service_modules/use_case_module.dart';
+import 'package:local_data_source/core/service/service_modules/util_module.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_keys.dart';
 import 'package:local_data_source/core/utils/route_manager/data/repository/route_manager.dart';
 import 'package:local_data_source/core/utils/route_manager/domain/entity/route.dart';

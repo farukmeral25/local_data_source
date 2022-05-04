@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:local_data_source/core/service/use_case_module.dart';
+import 'package:local_data_source/core/service/service_modules/use_case_module.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_key_param.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_key_with_value_param.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_keys.dart';
