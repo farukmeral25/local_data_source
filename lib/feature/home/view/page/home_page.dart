@@ -19,6 +19,24 @@ class HomePage extends StatelessWidget {
                 Text(credentialProvider.userInfo.userName),
                 Text(credentialProvider.userInfo.mail),
                 Text(credentialProvider.userInfo.password),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      credentialProvider.logOut();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Log Out"),
+                      ),
+                    ),
+                  ),
+                )
               ],
             );
           },

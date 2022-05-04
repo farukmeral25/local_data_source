@@ -9,7 +9,6 @@ import 'package:local_data_source/feature/credential/domain/entity/user_info.dar
 import 'package:local_data_source/feature/credential/domain/usecases/cache_user_info_usecase.dart';
 import 'package:local_data_source/feature/credential/domain/usecases/get_user_info_usecase.dart';
 import 'package:local_data_source/feature/credential/domain/usecases/remove_user_info_usecase.dart';
-import 'package:local_data_source/feature/home/view/page/home_page.dart';
 
 class CredentialProvider with ChangeNotifier {
   final GetUserInfoUsecase getUserInfoUsecase;
@@ -19,7 +18,9 @@ class CredentialProvider with ChangeNotifier {
   CredentialProvider(
       {required this.getUserInfoUsecase,
       required this.cacheUserInfoUsecase,
-      required this.removeUserInfoUsecase});
+      required this.removeUserInfoUsecase}) {
+    userIsLoginned();
+  }
 
   TextEditingController textEditingControllerUserName =
       TextEditingController(text: "username");
@@ -41,34 +42,46 @@ class CredentialProvider with ChangeNotifier {
   Eğer failure döner ise loginpage sayfasına yönlendirilecek.
 */
 
-  void logIn() async {
+  void userIsLoginned() async {
     final getUserInfoEither = await getUserInfoUsecase(LocalKeys.cacheuserinfo);
     getUserInfoEither.fold((failure) async {
-      if (condition) {
-        userInfo = UserInfoModel(
-          userName: textEditingControllerUserName.text,
-          mail: textEditingControllerMail.text,
-          password: textEditingControllerPassword.text,
-        );
-        final cacheUserInfoEither = await cacheUserInfoUsecase(
-          UserInfoModel(
-            userName: textEditingControllerUserName.text,
-            mail: textEditingControllerMail.text,
-            password: textEditingControllerPassword.text,
-          ),
-        );
-        cacheUserInfoEither.fold((failure) => Left(failure), (data) {
-          RouteManager.routeManager.page(homePageRoute);
-          return const Right(null);
-        });
-      }
-      RouteManager.routeManager.page(loginPageRoute);
+      RouteManager.routeManager.pageAndRemoveUntil(loginPageRoute);
       return Left(failure);
     }, (data) {
       userInfo = data;
-      RouteManager.routeManager.page(homePageRoute);
+      RouteManager.routeManager.pageAndRemoveUntil(homePageRoute);
 
       return Right(data);
+    });
+  }
+
+  void logIn() async {
+    if (condition) {
+      userInfo = UserInfoModel(
+        userName: textEditingControllerUserName.text,
+        mail: textEditingControllerMail.text,
+        password: textEditingControllerPassword.text,
+      );
+      final cacheUserInfoEither = await cacheUserInfoUsecase(
+        UserInfoModel(
+          userName: textEditingControllerUserName.text,
+          mail: textEditingControllerMail.text,
+          password: textEditingControllerPassword.text,
+        ),
+      );
+      cacheUserInfoEither.fold((failure) => Left(failure), (data) {
+        RouteManager.routeManager.pageAndRemoveUntil(homePageRoute);
+        return const Right(null);
+      });
+    }
+  }
+
+  void logOut() async {
+    final removeUserInfoEither =
+        await removeUserInfoUsecase(LocalKeys.cacheuserinfo);
+    removeUserInfoEither.fold((failure) => Left(failure), (data) {
+      RouteManager.routeManager.pageAndRemoveUntil(loginPageRoute);
+      return const Right(null);
     });
   }
 

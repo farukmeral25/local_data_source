@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:local_data_source/core/keys/global_key.dart';
 import 'package:local_data_source/core/utils/route_manager/domain/router.dart'
     as router;
-import 'package:local_data_source/feature/credential/view/login_page.dart';
+import 'package:local_data_source/feature/credential/view/splash_page.dart';
 import 'package:local_data_source/feature/credential/viewmodel/credential_provider.dart';
 import 'package:provider/provider.dart';
 import 'core/init/get_it.dart' as service;
@@ -33,7 +33,7 @@ class LocalDataApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: const SplashPage(),
     );
   }
 }
