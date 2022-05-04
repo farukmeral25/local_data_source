@@ -15,11 +15,12 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
-  provider: ^6.0.2
-  get_it: ^7.2.0
+
+  #Local Data Source
   flutter_secure_storage: ^5.0.2
 
-
+  #State-Management
+  flutter_riverpod: ^1.0.3
 
 dev_dependencies:
   flutter_test:
