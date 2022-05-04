@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_data_source/core/utils/local_data_source/data/repository/local_repository.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/repository/i_local_repository.dart';
@@ -10,16 +11,17 @@ import 'package:local_data_source/feature/credential/domain/usecases/cache_user_
 import 'package:local_data_source/feature/credential/domain/usecases/get_user_info_usecase.dart';
 import 'package:local_data_source/feature/credential/domain/usecases/remove_user_info_usecase.dart';
 import 'package:local_data_source/feature/credential/viewmodel/credential_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> init() async {
-  final sharedPref = await SharedPreferences.getInstance();
-  getIt.registerLazySingleton<SharedPreferences>(() => sharedPref);
+  // final sharedPref = await SharedPreferences.getInstance();
+  // getIt.registerLazySingleton<SharedPreferences>(() => sharedPref);
+
+  getIt.registerLazySingleton(() => const FlutterSecureStorage());
 
   getIt.registerLazySingleton<ILocalRepository>(
-      () => LocalRepository(sharedPreferences: getIt()));
+      () => LocalRepository(secureStorage: getIt()));
 
   getIt.registerLazySingleton(
       () => GetDataFromKeyUsecase(localRepository: getIt()));

@@ -1,19 +1,19 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_key_with_value_param.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_key_param.dart';
 import 'package:local_data_source/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_keys.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/repository/i_local_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalRepository implements ILocalRepository {
-  final SharedPreferences sharedPreferences;
+  final FlutterSecureStorage secureStorage;
 
-  LocalRepository({required this.sharedPreferences});
+  LocalRepository({required this.secureStorage});
 
   @override
   Future<Either<Failure, String>> getDataFromKey(LocalKeyParam param) async {
-    String? value = sharedPreferences.getString(param.localKey.getLocalKey());
+    String? value = await secureStorage.read(key: param.localKey.getLocalKey());
     if (value != null) {
       return Right(value);
     } else {
@@ -24,7 +24,7 @@ class LocalRepository implements ILocalRepository {
   @override
   Future<Either<Failure, void>> removeDataFromKey(LocalKeyParam param) async {
     try {
-      await sharedPreferences.remove(param.localKey.getLocalKey());
+      await secureStorage.delete(key: param.localKey.getLocalKey());
       return const Right(null);
     } on Failure catch (failure) {
       return Left(failure);
@@ -35,8 +35,8 @@ class LocalRepository implements ILocalRepository {
   Future<Either<Failure, void>> saveDataFromKey(
       LocalKeyWithValueParam param) async {
     try {
-      await sharedPreferences.setString(
-          param.localKey.getLocalKey(), param.value);
+      await secureStorage.write(
+          key: param.localKey.getLocalKey(), value: param.value);
       return const Right(null);
     } on Failure catch (failure) {
       return Left(failure);
