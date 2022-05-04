@@ -1,8 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_data_source/core/error/failure.dart';
 import 'package:local_data_source/core/service/service_modules/use_case_module.dart';
 import 'package:local_data_source/core/service/service_modules/util_module.dart';
+import 'package:local_data_source/core/shared/snackbar_widget.dart';
 import 'package:local_data_source/core/utils/local_data_source/domain/entity/local_keys.dart';
 import 'package:local_data_source/core/utils/route_manager/data/repository/route_manager.dart';
 import 'package:local_data_source/core/utils/route_manager/domain/entity/route.dart';
@@ -44,18 +46,40 @@ class CredentialViewModel {
           password: textEditingControllerPassword.text,
         ),
       );
-      cacheUserInfoEither.fold((failure) => Left(failure), (data) {
+      cacheUserInfoEither.fold((failure) {
+        showSnackBar(
+          title: "Error: $failure",
+        );
+        return Left(failure);
+      }, (data) {
+        showSnackBar(
+          title: "Login successful",
+          color: Colors.green,
+        );
         RouteManager.routeManager.pageAndRemoveUntil(homePageRoute);
         return const Right(null);
       });
+    } else {
+      showSnackBar(
+        title: "Error: ${UserNotFoundFailure().errorMessage()}",
+      );
     }
   }
 
   void logOut() async {
     final removeUserInfoEither =
         await _removeUserInfoUsecase(LocalKeys.cacheuserinfo);
-    removeUserInfoEither.fold((failure) => Left(failure), (data) {
+    removeUserInfoEither.fold((failure) {
+      showSnackBar(
+        title: "Error: $failure",
+      );
+      return Left(failure);
+    }, (data) {
       RouteManager.routeManager.pageAndRemoveUntil(loginPageRoute);
+      showSnackBar(
+        title: "Logout successful",
+        color: Colors.orange,
+      );
       return const Right(null);
     });
   }
