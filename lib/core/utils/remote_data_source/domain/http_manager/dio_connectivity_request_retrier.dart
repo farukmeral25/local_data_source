@@ -17,7 +17,6 @@ class DioConnectivityRequestRetrier {
     streamSubscription = connectivity.onConnectivityChanged.listen(
       (connectivityResult) async {
         if (connectivityResult != ConnectivityResult.none) {
-          // Complete the completer instead of returning
           responseCompleter.complete(
             dio.request(
               requestOptions.path,

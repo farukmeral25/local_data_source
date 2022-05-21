@@ -4,7 +4,6 @@ import 'package:local_data_source/core/constants/theme/app_colors.dart';
 import 'package:local_data_source/core/service/service_modules/util_module.dart';
 import 'package:local_data_source/core/service/service_modules/view_model_module.dart';
 import 'package:local_data_source/core/utils/app_user.dart';
-import 'package:local_data_source/feature/home/viewmodel/home_view_model.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,7 +11,6 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AppUser appUser = ref.watch(appUserProvider);
-    HomeViewModel _ = ref.watch(homeViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -38,6 +36,24 @@ class HomePage extends ConsumerWidget {
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text("Log Out"),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: GestureDetector(
+                onTap: () {
+                  ref.read(homeViewModelProvider).fetchTodos();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColor.green,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text("Fetch Todo"),
                   ),
                 ),
               ),

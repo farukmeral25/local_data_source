@@ -8,9 +8,7 @@ class HomeViewModel {
   late final FetchTodoUsecase _fetchTodoUsecase;
 
   HomeViewModel(Ref _ref)
-      : _fetchTodoUsecase = _ref.read(fetchTodoUsecaseProvider) {
-    fetchTodos();
-  }
+      : _fetchTodoUsecase = _ref.read(fetchTodoUsecaseProvider);
 
   Future<void> fetchTodos() async {
     final fetchTodoEither = await _fetchTodoUsecase(NoParams());
